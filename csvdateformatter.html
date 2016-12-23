@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+    textarea {
+        width: 45%;
+        height: 400px;
+    }
+    </style>
+</head>
+
+<body>
+<div>
+    <textarea id="input">
+1481835600000,34830
+1481922000000,60870
+1482008400000,65435
+1482094800000,58901
+1482181200000,63400
+1482267600000,56105
+1482354000000,55067
+1482440400000,18742</textarea>
+    <textarea id="output"></textarea>
+</div>
+<input type="button" value="convert" onclick="convert()" />
+
+<script>
+function convert() {
+    var input = document.getElementById("input"),
+        output = document.getElementById("output");
+    if (input.innerHTML.indexOf('"') != -1 || input.innerHTML.indexOf("'") != -1) {
+        alert("input data must not contain quotes");
+        return;
+    }
+
+    var lines = input.innerHTML.split("\n"),
+        i,
+        d,
+        values,
+        newlines = {};
+    for (i = 0; i < lines.length; i++) {
+        values = lines[i].split(",");
+        values[0] = formatDate(
+            new Date(parseInt(values[0]))
+        );
+        output.innerHTML += values.join(",") + "\n";
+    }
+}
+function leadingZeros(n, length) {
+    n = n.toString();
+    while (n.length < length) {
+        n = "0" + n;
+    }
+    return n;
+}
+function formatDate(d) {
+    // return d.getFullYear().toString() + "-";
+    return d.getFullYear().toString() + "-" +
+        leadingZeros(d.getMonth() + 1, 2) + "-" +
+        leadingZeros(d.getDate(), 2) + " " +
+        leadingZeros(d.getHours(), 2) + ":" +
+        leadingZeros(d.getMinutes(), 2) + ":" +
+        leadingZeros(d.getSeconds(), 2);
+}
+</script>
+</body>
+
+</html>
