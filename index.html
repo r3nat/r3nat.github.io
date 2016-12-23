@@ -21,22 +21,27 @@
 function convert() {
     var input = document.getElementById("input"),
         output = document.getElementById("output");
-    if (input.innerHTML.indexOf('"') != -1 || input.innerHTML.indexOf("'") != -1) {
+    if (input.value.indexOf('"') != -1 || input.value.indexOf("'") != -1) {
         alert("input data must not contain quotes");
         return;
     }
 
-    var lines = input.innerHTML.split("\n"),
+    output.value = "";
+
+    var lines = input.value.split("\n"),
         i,
-        d,
-        values,
-        newlines = {};
+        line,
+        values;
     for (i = 0; i < lines.length; i++) {
+        line = lines[i].replace(/^\s+|\s+$/g, '');
+        if (line.length == 0) {
+            continue;
+        }
         values = lines[i].split(",");
         values[0] = formatDate(
             new Date(parseInt(values[0]))
         );
-        output.innerHTML += values.join(",") + "\n";
+        output.value += values.join(",") + "\n";
     }
 }
 function leadingZeros(n, length) {
@@ -47,7 +52,6 @@ function leadingZeros(n, length) {
     return n;
 }
 function formatDate(d) {
-    // return d.getFullYear().toString() + "-";
     return d.getFullYear().toString() + "-" +
         leadingZeros(d.getMonth() + 1, 2) + "-" +
         leadingZeros(d.getDate(), 2) + " " +
